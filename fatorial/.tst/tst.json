@@ -1,0 +1,22 @@
+{
+  "files": {
+    "test.js": {
+      "category": "public",
+      "data": "// m\u00f3dulos node\nconst assert = require('assert');\nconst fs = require('fs');\n\nprocess.on('uncaughtException', function (e) {\n    console.log(e);\n});\n\n// arquivo a testar \u00e9 inclu\u00eddo como string... \n//eval(fs.readFileSync('polinomios.js').toString());\nvar cut = process.argv[process.argv.length - 1];\nif (!cut.endsWith('fatorial.js')) {\n    cut = process.argv[process.argv.length - 1];\n};\n\nconst original = fs.readFileSync(cut, 'utf8');\nconst linhas = original.split(/\\r?\\n/);\nconst uteis = linhas.map(l => l.replace(/# .*: .*$|####$/, ''));\nconst code = uteis.join('\\n');\neval(code);\n\ndescribe('fatorial recurs\u00e3o de cauda', function (){\n\n    it('exemplo simples 1', function () {\n        assert.equal(fat(10), 3628800);\n    });\n\n    it('exemplo simples 2', function () {\n        assert.equal(fat(14), 87178291200);\n    });\n\n    it('exemplo simples 3', function () {\n        assert.equal(fat(18), 6402373705728000);\n    });\n\n    it('deve dar stack overflow para algoritmo errado', function () {\n        // observe que o resultado n\u00e3o \u00e9 verificado\n        // apenas verificamos se o algoritmo consegue ir at\u00e9 o final\n        // lembre: node n\u00e3o suporta TCO na atual implementa\u00e7\u00e3o\n        fat(20000);\n    });\n\n});\n"
+    },
+    "runner.js": {
+      "category": "public",
+      "data": "var Mocha = require('mocha'),\n    fs = require('fs'),\n    path = require('path');\n\nvar tests_script = path.join(__dirname, 'test.js');\n\nvar files = fs.readdirSync(__dirname).filter(function(file){\n    // Only keep the .js files\n    return file.substr(-3) === '.js';\n});\n\nfiles.forEach(function () {\n    // create quiet mocha instance\n    var mocha = new Mocha({ reporter: function () {} }) // no logs\n\n    // add test script to mocha instance\n    mocha.addFile(tests_script);\n    mocha.run()\n        .on('pass', function(test) {\n            process.stdout.write(\".\");\n        })\n        .on('fail', function(test, err) {\n            if (err.message === 'Maximum call stack size exceeded') {\n                process.stdout.write(\"E\");\n            } else {\n                process.stdout.write(\"f\");\n            }\n        })\n        .on('end', function(test, err) {\n            process.stdout.write(\"\\n\");\n        });\n});\n"
+    },
+    "fatorial.js": {
+      "category": "answer",
+      "data": "function fat(n) {\n\t\t\n\tfunction tail(elemento) {\n\t\tif (elemento === 1) {\n\t\t\treturn 1;\n\t\t} else {\n\t\t\treturn tail(elemento - 1) * elemento \n\t\t}\n\n\t}\n\t\nreturn tail(n);\n}\n",
+      "name": "fatorial.js"
+    }
+  },
+  "kind": "assignment",
+  "name": null,
+  "checksum": "78978b9bbb936ab76b9992d955aae038",
+  "iid": 5264698475806720,
+  "activity_revision": "1.0.0"
+}
