@@ -7,10 +7,16 @@
     "runner.js": {
       "category": "public",
       "data": "var Mocha = require('mocha'),\n    fs = require('fs'),\n    path = require('path');\n\nvar tests_script = path.join(__dirname, 'test.js');\n\nvar files = fs.readdirSync(__dirname).filter(function(file){\n    // Only keep the .js files\n    return file.substr(-3) === '.js';\n});\n\nfiles.forEach(function () {\n    // create quiet mocha instance\n    var mocha = new Mocha({ reporter: function () {} }) // no logs\n\n    // add test script to mocha instance\n    mocha.addFile(tests_script);\n    mocha.run()\n        .on('pass', function(test) {\n            process.stdout.write(\".\");\n        })\n        .on('fail', function(test, err) {\n            process.stdout.write(\"f\");\n        })\n        .on('end', function(test, err) {\n            process.stdout.write(\"\\n\");\n        });\n});\n"
+    },
+    "busca_e_filtra.js": {
+      "category": "answer",
+      "data": "function busca_e_filtra(url_base) {\n\tvar dados = new Request(url_base + \"/data\");\n\tconsole.log(dados.json());\n}\n",
+      "name": "busca_e_filtra.js"
     }
   },
-  "iid": 5790719226675200,
   "kind": "assignment",
-  "activity_revision": "1.0.0",
-  "name": null
+  "name": null,
+  "checksum": "2ebafb67e2fe6302ace738a2ece14b2d",
+  "iid": 5790719226675200,
+  "activity_revision": "1.0.0"
 }
